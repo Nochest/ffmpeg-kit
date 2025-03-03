@@ -183,7 +183,7 @@ public class FFmpegKitFlutterPlugin implements FlutterPlugin, ActivityAware, Met
     }
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         context = binding.getApplicationContext();
         BinaryMessenger messenger = binding.getBinaryMessenger();
 
@@ -211,9 +211,9 @@ public class FFmpegKitFlutterPlugin implements FlutterPlugin, ActivityAware, Met
     }
 
     @Override
-    public void onAttachedToActivity(@NonNull ActivityPluginBinding activityPluginBinding) {
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activity = binding.getActivity();
-        activityBinding = binding;
+        activityPluginBinding = binding;
         activityBinding.addActivityResultListener(this);
 
         Log.i(LIBRARY_NAME, "FFmpegKitFlutterPlugin attached to activity.");
@@ -221,19 +221,19 @@ public class FFmpegKitFlutterPlugin implements FlutterPlugin, ActivityAware, Met
 
     @Override
     public void onDetachedFromActivityForConfigChanges() {
-        onDetachedFromActivity();
+       activity = null;
     }
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-        onAttachedToActivity(binding);
+        activity = binding.getActivity();
     }
 
     @Override
     public void onDetachedFromActivity() {
-        if (activityBinding != null) {
-            activityBinding.removeActivityResultListener(this);
-            activityBinding = null;
+        if (activityPluginBinding != null) {
+            activityPluginBinding.removeActivityResultListener(this);
+            activityPluginBinding = null;
         }
         activity = null;
         Log.i(LIBRARY_NAME, "FFmpegKitFlutterPlugin detached from activity.");
