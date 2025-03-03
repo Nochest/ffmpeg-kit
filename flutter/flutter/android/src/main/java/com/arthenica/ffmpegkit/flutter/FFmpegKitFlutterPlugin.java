@@ -184,12 +184,14 @@ public class FFmpegKitFlutterPlugin implements FlutterPlugin, ActivityAware, Met
 
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding flutterPluginBinding) {
-        this.flutterPluginBinding = flutterPluginBinding;
+        methodChannel  = new MethodChannel(binding.getBinaryMessenger(), "ffmpeg_kit_flutter");
+        methodChannel.setMethodCallHandler(new FFmpegKitFlutterPlugin());
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull final FlutterPluginBinding binding) {
-        this.flutterPluginBinding = null;
+        methodChannel.setMethodCallHandler(null);
+        methodChannel = null;
     }
 
     @Override
